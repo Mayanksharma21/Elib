@@ -1,6 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
-import { HttpError } from "http-errors";
-import { envConfig } from "./config/config";
+import express from "express";
 import globalErrorHandler from "./middlewares/globalErrorHandler";
 
 const app = express();
