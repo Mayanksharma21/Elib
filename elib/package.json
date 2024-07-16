@@ -4,7 +4,7 @@
   "description": "This is Backend of E-Book Store",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.ts"
+    "dev": "nodemon -q server.ts"
   },
   "keywords": [
     "REST",
@@ -14,13 +14,13 @@
   "author": "Mayank Sharma <mayank.sharmaa219@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "@eslint/js": "^9.7.0",
+    "@types/express": "^4.17.21",
     "@types/node": "^20.14.10",
-    "eslint": "^9.7.0",
-    "globals": "^15.8.0",
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.3",
-    "typescript-eslint": "^7.16.1"
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
   }
 }
