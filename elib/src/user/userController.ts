@@ -54,4 +54,44 @@ const handleUserRegister = async (
   }
 };
 
-export { handleUserRegister };
+const handleUserLogin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    const error = createHttpError(400, "All fields are required");
+    return next(error);
+  }
+
+  try {
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      const error = createHttpError(400, "User not found");
+      return next(error);
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordMatch) {
+      const error = createHttpError(400, "Invalid credentials");
+      return next(error);
+    }
+
+    const token = sign({ sub: user._id }, envConfig.jwt_secret as string, {
+      expiresIn: "7d",
+    });
+
+    return res.status(200).json({ token });
+  } catch (error) {
+    console.log(error);
+
+    const customError = createHttpError(500, "Server Error while logging in!!");
+    return next(customError);
+  }
+};
+
+export { handleUserRegister, handleUserLogin };
