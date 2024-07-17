@@ -4,6 +4,10 @@ import userRouter from "./user/userRouter";
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+
 app.get("/", (req, res, next) => {
   res.json({
     message: "Welome to elib API's",
