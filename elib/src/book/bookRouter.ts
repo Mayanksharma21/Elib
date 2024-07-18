@@ -2,6 +2,7 @@ import path from "node:path";
 import express from "express";
 import multer from "multer";
 import { handleCreateBook } from "./bookController";
+import verifyJwtToken from "../middlewares/verifyJwtToken";
 
 const bookRouter = express.Router();
 
@@ -11,6 +12,7 @@ const fileUpload = multer({
 });
 
 bookRouter.route("/").post(
+  verifyJwtToken,
   fileUpload.fields([
     {
       name: "coverImage",
