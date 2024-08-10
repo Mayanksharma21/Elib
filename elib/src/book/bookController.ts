@@ -83,4 +83,43 @@ const handleCreateBook = async (
   }
 };
 
-export { handleCreateBook };
+const handleUpdateBook = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { bookId } = req.params;
+    const { title, genre } = req.body;
+
+    const book = await bookModel.findById(bookId);
+
+    if (!book) {
+      return next(createHttpError(404, "Book not found"));
+    }
+
+    const _customRequest = req as AuthRequest;
+
+    if (book.author.toString() !== _customRequest.userId) {
+      return next(
+        createHttpError(403, "You are not authorized to update this book")
+      );
+    }
+
+    if (title) {
+      book.title = title;
+    }
+
+    if (genre) {
+      book.genre = genre;
+    }
+
+    const updatedBook = await book.save();
+
+    res.status(200).json({ id: updatedBook._id });
+  } catch (error) {
+    return next(createHttpError(500, "Error while updating the book"));
+  }
+};
+
+export { handleCreateBook, handleUpdateBook };
